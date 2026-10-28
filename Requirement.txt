@@ -1,1 +1,6 @@
 
+### `requirements.txt`
+
+```text
+# This project uses only Python's standard library.
+
