@@ -1,6 +1,3 @@
 
-### `requirements.txt`
-
-```text
-# This project uses only Python's standard library.
-
+Python 3.8 or newer
+No additional Python packages
