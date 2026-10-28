@@ -1,1 +1,88 @@
+import json
+from pathlib import Path
+
+TASKS_FILE = Path("tasks.json")
+
+
+def load_tasks():
+    """Load tasks from the JSON file, or return an empty list."""
+    if not TASKS_FILE.exists():
+        return []
+
+    try:
+        with TASKS_FILE.open("r", encoding="utf-8") as file:
+            tasks = json.load(file)
+            return tasks if isinstance(tasks, list) else []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def save_tasks(tasks):
+    """Save tasks to the JSON file."""
+    with TASKS_FILE.open("w", encoding="utf-8") as file:
+        json.dump(tasks, file, indent=2)
+
+
+def show_tasks(tasks):
+    """Display all tasks."""
+    if not tasks:
+        print("\nNo tasks yet.")
+        return
+
+    print("\nYour tasks:")
+    for number, task in enumerate(tasks, start=1):
+        status = "✓" if task["done"] else " "
+        print(f"{number}. [{status}] {task['text']}")
+
+
+def main():
+    tasks = load_tasks()
+
+    while True:
+        print("\n--- Python To-Do List ---")
+        print("1. View tasks")
+        print("2. Add a task")
+        print("3. Mark a task complete")
+        print("4. Quit")
+
+        choice = input("Choose an option (1-4): ").strip()
+
+        if choice == "1":
+            show_tasks(tasks)
+
+        elif choice == "2":
+            text = input("Enter a task: ").strip()
+            if text:
+                tasks.append({"text": text, "done": False})
+                save_tasks(tasks)
+                print("Task added.")
+            else:
+                print("Task cannot be empty.")
+
+        elif choice == "3":
+            show_tasks(tasks)
+            if not tasks:
+                continue
+
+            try:
+                number = int(input("Enter the task number to complete: "))
+                if 1 <= number <= len(tasks):
+                    tasks[number - 1]["done"] = True
+                    save_tasks(tasks)
+                    print("Task marked complete.")
+                else:
+                    print("That task number does not exist.")
+            except ValueError:
+                print("Please enter a valid number.")
+
+        elif choice == "4":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Please choose an option from 1 to 4.")
+
+
+if __name__ == "__main__":
+    main()
 
