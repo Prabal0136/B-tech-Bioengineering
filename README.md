@@ -107,6 +107,3 @@ simple-todo-cli/
 └── tasks.json      # created automatically when you add your first task
 ```
 
-## License
-
-This project is licensed under the MIT License.
